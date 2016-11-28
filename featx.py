@@ -9,7 +9,6 @@ def bag_of_words(words):
 	>>> bag_of_words(['the', 'quick', 'brown', 'fox'])
 	{'quick': True, 'brown': True, 'the': True, 'fox': True}
 	'''
-        #words = ' '.join([word for word in words.split() if word not in stopwords.words("english")])
 	return dict([(word, True) for word in words])
 
 def bag_of_words_not_in_set(words, badwords):
@@ -113,3 +112,4 @@ def reuters_train_test_feats(feature_detector=bag_of_words):
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
+
