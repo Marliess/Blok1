@@ -1,14 +1,13 @@
-#!/usr/bin/python2.7
+##!/usr/bin/python2.7
 
 # Basic classifiction functionality with Naive Bayes. File provided for the assignment on classification (IR course 2016/17)
 
 import nltk.classify
 import collections
-from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem.porter import *
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from featx import bag_of_non_stopwords, bag_of_words, high_information_words
+from featx import high_information_words, bag_of_bigrams_words
 from classification import precision_recall
 
 from random import shuffle
@@ -23,8 +22,7 @@ def get_filenames_in_folder(folder):
 
 # reads all the files that correspond to the input list of categories and puts their contents in bags of words
 def read_files(categories):
-        #st = LancasterStemmer()
-        #stemmer = PorterStemmer()
+        stemmer = PorterStemmer()
 	feats = list ()
 	print("\n##### Reading files...")
 	for category in categories:
@@ -33,20 +31,18 @@ def read_files(categories):
 		for f in files:
 			data = open('Volkskrant/' + category + '/' + f, 'r').read().decode("utf-8")
 			tokens = word_tokenize(data)
-			#tokens = [token.lower() for token in tokens]   #nog geen verbetering gezien in accuracy
+			tokens = [token.lower() for token in tokens]
 			for token in tokens:
                                 for ch in token:
                                         if ch in string.punctuation:
                                                 token = token.replace(ch,'')
-                        #tokens = [st.stem(token) for token in tokens]
-                        #tokens = [stemmer.stem(token) for token in tokens]
-			#bag = bag_of_non_stopwords(tokens,stoplist='english')
-                        bag = bag_of_words(tokens)
+                        tokens = [stemmer.stem(token) for token in tokens]
+                        bag = bag_of_bigrams_words(tokens)
 			feats.append((bag, category))
 			#print len(tokens)
 			num_files+=1
-#			if num_files>=50: # you may want to de-comment this and the next line if you're doing tests (it just loads N documents instead of the whole collection so it runs faster
-#				break
+			#if num_files>=100: # you may want to de-comment this and the next line if you're doing tests (it just loads N documents instead of the whole collection so it runs faster
+				#break
 		
 		print ("  Category %s, %i files read" % (category, num_files))
 
